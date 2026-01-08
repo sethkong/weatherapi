@@ -22,3 +22,4 @@ In another terminal invoke the `weather` endpoint by providing the `latitude` an
 ```cmd
 curl localhost:4000/weather/35.2271/-80.8431
 ```
+Or using a web browser: `http://localhost:4000/weather/35.2271/-80.8431`
