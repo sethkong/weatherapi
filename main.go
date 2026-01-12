@@ -1,13 +1,11 @@
 package main
 
 import (
-	"bufio"
 	"encoding/json"
 	"fmt"
 	"io"
 	"log"
 	"net/http"
-	"os"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
@@ -31,25 +29,6 @@ type Forecast struct {
 	ShortForecast              string `json:"shortForecast"`
 	DetailedForecast           string `json:"detailedForecast"`
 	ProbabilityOfPrecipitation any    `json:"probabilityOfPrecipitation"`
-}
-
-func readContentFromFile() (string, error) {
-	file, err := os.Open("README.md")
-	if err != nil {
-		log.Println("Error opening README.md:", err)
-		return "", err
-	}
-	defer file.Close()
-	scanner := bufio.NewScanner(file)
-	content := ""
-	for scanner.Scan() {
-		content += scanner.Text() + "\n"
-	}
-	if err := scanner.Err(); err != nil {
-		log.Println("Error reading README.md:", err)
-		return "", err
-	}
-	return content, nil
 }
 
 func weatherRoutes() chi.Router {
@@ -149,12 +128,7 @@ func main() {
 	router := chi.NewRouter()
 	router.Use(middleware.Logger)
 	router.Get("/", func(w http.ResponseWriter, r *http.Request) {
-		content, err := readContentFromFile()
-		if err != nil {
-			http.Error(w, "Could not read README.md", http.StatusInternalServerError)
-			return
-		}
-		w.Write([]byte(content))
+		w.Write([]byte("Hello world!"))
 	})
 	router.Mount("/weather", weatherRoutes())
 	http.ListenAndServe(":4000", router)
